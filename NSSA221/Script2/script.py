@@ -1,4 +1,5 @@
 import csv
+from subprocess import call
 import os
 
 csv_users = {}
@@ -94,21 +95,21 @@ for user in csv_users.items():
     shell = '/bin/bash' if group != 'office' else '/bin/csh'
 
     if not group_exist(group):
-        os.system(f'groupadd -f {group}')
-        print(f'groupadd -f {group}')
+        call(f'groupadd -f {group}', shell=True)
+        # print(f'groupadd -f {group}')
 
     if not os.path.exists(f'/home/{department}'):
-        os.system(f'mkdir /home/{department}')
-        print(f'mkdir /home/{department}')
+        call(f'mkdir /home/{department}', shell=True)
+        # print(f'mkdir /home/{department}')
 
-    os.system(
-        f'useradd -m -d /home/{department}/{username} -s {shell} -g {group} -c "{full_name}" {username}')
-    print(
-        f'useradd -m -d /home/{department}/{username} -s {shell} -g {group} -c "{full_name}" {username}')
-    os.system(f'echo -e {password}\n{password} | passwd {username}')
-    print(f'echo -e {password}\n{password} | passwd {username}')
-    os.system(f'passwd -e {username}')
-    print(f'passwd -e {username}')
+    call(
+        f'useradd -m -d /home/{department}/{username} -s {shell} -g {group} -c "{full_name}" {username}', shell=True)
+    # print(
+    # f'useradd -m -d /home/{department}/{username} -s {shell} -g {group} -c "{full_name}" {username}')
+    call(f'echo -e {password} | passwd {username} --stdin', shell=True)
+    # print(f'echo -e {password} | passwd {username} --stdin')
+    call(f'passwd -e {username}', shell=True)
+    # print(f'passwd -e {username}')
 
 for user, reason in bad_users.items():
     print(f'BAD RECORD: EMPLOYEE_ID={user}, REASON=\'{reason}\'')
