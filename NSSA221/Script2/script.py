@@ -93,7 +93,7 @@ for user in csv_users.items():
 
     shell = '/bin/bash' if group != 'office' else '/bin/csh'
 
-    if not group_exist():
+    if not group_exist(group):
         os.system(f'groupadd -f {group}')
 
     if not os.path.exists(f'/home/{department}'):
