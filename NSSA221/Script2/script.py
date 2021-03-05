@@ -95,14 +95,20 @@ for user in csv_users.items():
 
     if not group_exist(group):
         os.system(f'groupadd -f {group}')
+        print(f'groupadd -f {group}')
 
     if not os.path.exists(f'/home/{department}'):
         os.system(f'mkdir /home/{department}')
+        print(f'mkdir /home/{department}')
 
     os.system(
         f'useradd -m -d /home/{department}/{username} -s {shell} -g {group} -c "{full_name}" {username}')
-    os.system(f'echo {password} | passwd {username} --stdin')
-    os.system(f'passwd -e user')
+    print(
+        f'useradd -m -d /home/{department}/{username} -s {shell} -g {group} -c "{full_name}" {username}')
+    os.system(f'echo -e {password}\n{password} | passwd {username}')
+    print(f'echo -e {password}\n{password} | passwd {username}')
+    os.system(f'passwd -e {username}')
+    print(f'passwd -e {username}')
 
 for user, reason in bad_users.items():
     print(f'BAD RECORD: EMPLOYEE_ID={user}, REASON=\'{reason}\'')
