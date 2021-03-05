@@ -1,6 +1,7 @@
 import csv
 from subprocess import call
 import os
+from pwd import getpwnam
 
 csv_users = {}
 bad_users = {}
@@ -12,7 +13,12 @@ with open('Lab02_Users.csv', 'r') as csvfile:
             continue
         csv_users[line[0]] = line[1:]
 
-
+def user_exists (username):
+    try:
+        getpwnam(username)
+        return True
+    except:
+        return False
 def make_usernames(id, user):
     last = user[0].lower().replace("'", '')
     first = user[1].lower().replace("'", '')
